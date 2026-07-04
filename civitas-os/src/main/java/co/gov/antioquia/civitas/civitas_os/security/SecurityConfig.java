@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import co.gov.antioquia.civitas.civitas_os.constants.SecurityConstants;
 import co.gov.antioquia.civitas.civitas_os.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +34,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/aPi/docs/**", "/swagger-ui/**", "/v2/api-docs/**").permitAll()
+                        .requestMatchers(SecurityConstants.PUBLIC_MATCHERS).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
