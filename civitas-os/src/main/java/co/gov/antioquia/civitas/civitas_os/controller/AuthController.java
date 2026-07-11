@@ -10,6 +10,7 @@ import co.gov.antioquia.civitas.civitas_os.dto.request.LoginRequest;
 import co.gov.antioquia.civitas.civitas_os.dto.request.UserRegistrationRequest;
 import co.gov.antioquia.civitas.civitas_os.dto.response.AuthResponse;
 import co.gov.antioquia.civitas.civitas_os.dto.response.UserResponse;
+import co.gov.antioquia.civitas.civitas_os.response.ApiResponse;
 import co.gov.antioquia.civitas.civitas_os.service.AuthService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
@@ -23,14 +24,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRegistrationRequest request){
-        var response = authService.registerUser(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody UserRegistrationRequest request) {
+        var responseData = authService.registerUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.created("Usuario registrado exitosamente", responseData));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request){
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
+        var tokenData = authService.login(request);
+        return ResponseEntity.ok(ApiResponse.success("Inicio de sesión exitoso", tokenData));
     }
 
 }

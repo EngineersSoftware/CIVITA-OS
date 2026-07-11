@@ -9,8 +9,8 @@ import co.gov.antioquia.civitas.civitas_os.dto.request.LoginRequest;
 import co.gov.antioquia.civitas.civitas_os.dto.request.UserRegistrationRequest;
 import co.gov.antioquia.civitas.civitas_os.dto.response.AuthResponse;
 import co.gov.antioquia.civitas.civitas_os.dto.response.UserResponse;
-import co.gov.antioquia.civitas.civitas_os.entity.User;
 import co.gov.antioquia.civitas.civitas_os.jwt.JwtService;
+import co.gov.antioquia.civitas.civitas_os.mapper.UserMapper;
 import co.gov.antioquia.civitas.civitas_os.repository.UserRepository;
 import co.gov.antioquia.civitas.civitas_os.service.AuthService;
 import jakarta.transaction.Transactional;
@@ -22,6 +22,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
@@ -32,20 +33,10 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("El usuario ya existe");
         }
 
-        var user = User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .enabled(true)
-                .build();
-
+        var user = userMapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         var savedUser = userRepository.save(user);
-
-        return UserResponse.builder()
-                .id(savedUser.getId())
-                .username(savedUser.getUsername())
-                .email(savedUser.getEmail())
-                .build();
+        return userMapper.toResponse(savedUser);
     }
 
     @Override
