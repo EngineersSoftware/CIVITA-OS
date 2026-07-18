@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import co.gov.antioquia.civitas.civitas_os.dto.request.UserRegistrationRequest;
+import co.gov.antioquia.civitas.civitas_os.dto.response.UserDtoResponse;
 import co.gov.antioquia.civitas.civitas_os.dto.response.UserResponse;
 import co.gov.antioquia.civitas.civitas_os.entity.User;
 
@@ -17,5 +18,8 @@ public interface UserMapper {
     User toEntity(UserRegistrationRequest Request);
 
     UserResponse toResponse(User user);
+
+    @Mapping(target = "createdAt", ignore = true)
+    UserDtoResponse toDtoResponse(User user);
 
 }
