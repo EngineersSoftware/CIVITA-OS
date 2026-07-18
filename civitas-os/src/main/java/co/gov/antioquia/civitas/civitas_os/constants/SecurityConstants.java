@@ -14,8 +14,9 @@ public final class SecurityConstants {
         "/api/v1/auth/**",
         "/api/docs/**",
         "/swagger-ui/**",
-        "/v2/api-docs/**",
-        "/actuator/health"
+        "/v3/api-docs/**",
+        "/actuator/health",
+        "/api/v1/users/register"
     };
 
     public static final String CLAIM_ROLES = "roles";
