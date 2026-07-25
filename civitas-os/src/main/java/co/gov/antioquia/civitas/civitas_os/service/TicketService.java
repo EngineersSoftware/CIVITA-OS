@@ -10,7 +10,7 @@ public interface TicketService {
 
     TicketResponse createTicket(TicketRequest request, String username);
     List<TicketResponse> getAllTickets();
-    List<TicketResponse> getTicketsByUsername(String username);
-    TicketResponse updateTicket(Long id, TicketStatus request);
+    List<TicketResponse> getTicketByUsername(String username);
+    TicketResponse updateStatus(Long id, TicketStatus request);
 
 }
