@@ -49,6 +49,10 @@ public class Ticket {
     
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_id")
+    private Asset asset;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
